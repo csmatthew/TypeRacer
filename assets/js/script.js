@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const timeSpan = document.getElementById('time');
     const wpmSpan = document.getElementById('wpm');
     const levelSpan = document.getElementById('level');
-    let startTime, endTime;
+    let startTime = null, endTime = null;
+    let timerStarted = false;
 
     function updateSampleText() {
         const selectedDifficulty = difficultySelect.value;
@@ -36,13 +37,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function startTest() {
-        startTime = new Date();
         startBtn.disabled = true;
         stopBtn.disabled = false;
         retryBtn.disabled = true;
         userInput.disabled = false;
         userInput.value = ''; // Clear the user input area
         userInput.focus(); // Set focus to the user input area
+        timerStarted = false; // Reset the timer started flag
+    }
+
+    function startTimer() {
+        if (!timerStarted) {
+            startTime = new Date();
+            timerStarted = true;
+        }
     }
 
     function stopTest() {
@@ -84,12 +92,16 @@ document.addEventListener('DOMContentLoaded', function() {
         retryBtn.disabled = true;
         userInput.disabled = true;
         userInput.value = ''; // Clear the user input area
+        startTime = null; // Reset the start time
+        endTime = null; // Reset the end time
+        timerStarted = false; // Reset the timer started flag
     }
 
     difficultySelect.addEventListener('change', updateSampleText);
     startBtn.addEventListener('click', startTest);
     stopBtn.addEventListener('click', stopTest);
     retryBtn.addEventListener('click', retryTest);
+    userInput.addEventListener('input', startTimer); // Start timer on user input
 
     // Trigger change event to display initial text
     updateSampleText();
