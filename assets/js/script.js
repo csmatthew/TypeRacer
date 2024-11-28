@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const startBtn = document.getElementById('start-btn');
     const stopBtn = document.getElementById('stop-btn');
     const retryBtn = document.getElementById('retry-btn');
+    const userInput = document.getElementById('user-input');
     const timeSpan = document.getElementById('time');
     let startTime, endTime;
 
@@ -37,6 +38,9 @@ document.addEventListener('DOMContentLoaded', function() {
         startBtn.disabled = true;
         stopBtn.disabled = false;
         retryBtn.disabled = true;
+        userInput.disabled = false;
+        userInput.value = ''; // Clear the user input area
+        userInput.focus(); // Set focus to the user input area
     }
 
     function stopTest() {
@@ -46,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
         startBtn.disabled = false;
         stopBtn.disabled = true;
         retryBtn.disabled = false;
+        userInput.disabled = true;
     }
 
     function retryTest() {
@@ -54,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
         startBtn.disabled = false;
         stopBtn.disabled = true;
         retryBtn.disabled = true;
+        userInput.disabled = true;
+        userInput.value = ''; // Clear the user input area
     }
 
     difficultySelect.addEventListener('change', updateSampleText);
@@ -65,4 +72,5 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSampleText();
     stopBtn.disabled = true;
     retryBtn.disabled = true;
+    userInput.disabled = true; // Disable user input area initially
 });
