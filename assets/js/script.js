@@ -54,6 +54,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function stopTest() {
+        if (!timerStarted) {
+            timeSpan.textContent = '0.00';
+            wpmSpan.textContent = '0';
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            retryBtn.disabled = false;
+            userInput.disabled = true;
+            return;
+        }
+
         endTime = new Date();
         const timeTaken = (endTime - startTime) / 1000; // time in seconds
         timeSpan.textContent = timeTaken.toFixed(2);
