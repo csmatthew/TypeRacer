@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const retryBtn = document.getElementById('retry-btn');
     const userInput = document.getElementById('user-input');
     const timeSpan = document.getElementById('time');
+    const wpmSpan = document.getElementById('wpm');
+    const levelSpan = document.getElementById('level');
     let startTime, endTime;
 
     function updateSampleText() {
@@ -51,11 +53,32 @@ document.addEventListener('DOMContentLoaded', function() {
         stopBtn.disabled = true;
         retryBtn.disabled = false;
         userInput.disabled = true;
+
+        // Calculate WPM
+        const sampleText = sampleTextDiv.textContent;
+        const userText = userInput.value;
+        const sampleWords = sampleText.split(' ');
+        const userWords = userText.split(' ');
+        let correctWords = 0;
+
+        for (let i = 0; i < userWords.length; i++) {
+            if (userWords[i] === sampleWords[i]) {
+                correctWords++;
+            }
+        }
+
+        const wpm = Math.round((correctWords / timeTaken) * 60);
+        wpmSpan.textContent = wpm;
+
+        // Display difficulty level
+        const selectedDifficulty = difficultySelect.value;
+        levelSpan.textContent = selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1);
     }
 
     function retryTest() {
         updateSampleText();
         timeSpan.textContent = '0';
+        wpmSpan.textContent = '0';
         startBtn.disabled = false;
         stopBtn.disabled = true;
         retryBtn.disabled = true;
