@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const stopBtn = document.getElementById('stop-btn');
     const retryBtn = document.getElementById('retry-btn');
     const userInput = document.getElementById('user-input');
+    const formattedUserInput = document.getElementById('formatted-user-input');
     const timeSpan = document.getElementById('time');
     const wpmSpan = document.getElementById('wpm');
     const levelSpan = document.getElementById('level');
@@ -42,6 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
         retryBtn.disabled = true;
         userInput.disabled = false;
         userInput.value = ''; // Clear the user input area
+        userInput.style.display = 'block'; // Show the user input area
+        formattedUserInput.style.display = 'none'; // Hide the formatted user input area
         userInput.focus(); // Set focus to the user input area
         timerStarted = false; // Reset the timer started flag
     }
@@ -79,9 +82,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const userWords = userText.split(' ');
         let correctWords = 0;
 
+        let formattedText = '';
+
         for (let i = 0; i < userWords.length; i++) {
             if (userWords[i] === sampleWords[i]) {
                 correctWords++;
+                formattedText += `<span style="color: green;">${userWords[i]}</span> `;
+            } else {
+                formattedText += `<span style="color: red;">${userWords[i]}</span> `;
             }
         }
 
@@ -91,6 +99,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display difficulty level
         const selectedDifficulty = difficultySelect.value;
         levelSpan.textContent = selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1);
+
+        // Update formatted user input with formatted text
+        formattedUserInput.innerHTML = formattedText.trim();
+        userInput.style.display = 'none'; // Hide the user input area
+        formattedUserInput.style.display = 'block'; // Show the formatted user input area
     }
 
     function retryTest() {
@@ -102,9 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
         retryBtn.disabled = true;
         userInput.disabled = true;
         userInput.value = ''; // Clear the user input area
+        formattedUserInput.innerHTML = ''; // Clear the formatted user input area
         startTime = null; // Reset the start time
         endTime = null; // Reset the end time
         timerStarted = false; // Reset the timer started flag
+        userInput.style.display = 'block'; // Show the user input area
+        formattedUserInput.style.display = 'none'; // Hide the formatted user input area
     }
 
     difficultySelect.addEventListener('change', updateSampleText);
@@ -124,4 +140,5 @@ document.addEventListener('DOMContentLoaded', function() {
     stopBtn.disabled = true;
     retryBtn.disabled = true;
     userInput.disabled = true; // Disable user input area initially
+    formattedUserInput.style.display = 'none'; // Hide the formatted user input area initially
 });
