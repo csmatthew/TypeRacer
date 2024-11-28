@@ -22,7 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const startBtn = document.getElementById('start-btn');
     const stopBtn = document.getElementById('stop-btn');
     const retryBtn = document.getElementById('retry-btn');
+    const userInput = document.getElementById('user-input');
     const timeSpan = document.getElementById('time');
+    const wpmSpan = document.getElementById('wpm');
+    const levelSpan = document.getElementById('level');
     let startTime, endTime;
 
     function updateSampleText() {
@@ -37,6 +40,9 @@ document.addEventListener('DOMContentLoaded', function() {
         startBtn.disabled = true;
         stopBtn.disabled = false;
         retryBtn.disabled = true;
+        userInput.disabled = false;
+        userInput.value = ''; // Clear the user input area
+        userInput.focus(); // Set focus to the user input area
     }
 
     function stopTest() {
@@ -46,14 +52,38 @@ document.addEventListener('DOMContentLoaded', function() {
         startBtn.disabled = false;
         stopBtn.disabled = true;
         retryBtn.disabled = false;
+        userInput.disabled = true;
+
+        // Calculate WPM
+        const sampleText = sampleTextDiv.textContent;
+        const userText = userInput.value;
+        const sampleWords = sampleText.split(' ');
+        const userWords = userText.split(' ');
+        let correctWords = 0;
+
+        for (let i = 0; i < userWords.length; i++) {
+            if (userWords[i] === sampleWords[i]) {
+                correctWords++;
+            }
+        }
+
+        const wpm = Math.round((correctWords / timeTaken) * 60);
+        wpmSpan.textContent = wpm;
+
+        // Display difficulty level
+        const selectedDifficulty = difficultySelect.value;
+        levelSpan.textContent = selectedDifficulty.charAt(0).toUpperCase() + selectedDifficulty.slice(1);
     }
 
     function retryTest() {
         updateSampleText();
         timeSpan.textContent = '0';
+        wpmSpan.textContent = '0';
         startBtn.disabled = false;
         stopBtn.disabled = true;
         retryBtn.disabled = true;
+        userInput.disabled = true;
+        userInput.value = ''; // Clear the user input area
     }
 
     difficultySelect.addEventListener('change', updateSampleText);
@@ -65,4 +95,5 @@ document.addEventListener('DOMContentLoaded', function() {
     updateSampleText();
     stopBtn.disabled = true;
     retryBtn.disabled = true;
+    userInput.disabled = true; // Disable user input area initially
 });
