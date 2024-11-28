@@ -112,6 +112,12 @@ document.addEventListener('DOMContentLoaded', function() {
     stopBtn.addEventListener('click', stopTest);
     retryBtn.addEventListener('click', retryTest);
     userInput.addEventListener('input', startTimer); // Start timer on user input
+    userInput.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // Prevent the default action of the Enter key
+            stopTest();
+        }
+    });
 
     // Trigger change event to display initial text
     updateSampleText();
