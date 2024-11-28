@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const difficultySelect = document.getElementById('difficulty');
     const sampleTextDiv = document.getElementById('sample-text');
+    const startBtn = document.getElementById('start-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const retryBtn = document.getElementById('retry-btn');
+    const timeSpan = document.getElementById('time');
+    let startTime, endTime;
 
     function updateSampleText() {
         const selectedDifficulty = difficultySelect.value;
@@ -27,8 +32,37 @@ document.addEventListener('DOMContentLoaded', function() {
         sampleTextDiv.textContent = randomText;
     }
 
+    function startTest() {
+        startTime = new Date();
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        retryBtn.disabled = true;
+    }
+
+    function stopTest() {
+        endTime = new Date();
+        const timeTaken = (endTime - startTime) / 1000; // time in seconds
+        timeSpan.textContent = timeTaken.toFixed(2);
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        retryBtn.disabled = false;
+    }
+
+    function retryTest() {
+        updateSampleText();
+        timeSpan.textContent = '0';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        retryBtn.disabled = true;
+    }
+
     difficultySelect.addEventListener('change', updateSampleText);
+    startBtn.addEventListener('click', startTest);
+    stopBtn.addEventListener('click', stopTest);
+    retryBtn.addEventListener('click', retryTest);
 
     // Trigger change event to display initial text
     updateSampleText();
+    stopBtn.disabled = true;
+    retryBtn.disabled = true;
 });
